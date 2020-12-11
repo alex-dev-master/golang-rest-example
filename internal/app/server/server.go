@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/alex-dev-master/golang-rest-example/internal/app/model"
 	"github.com/alex-dev-master/golang-rest-example/internal/app/store"
 	"github.com/alex-dev-master/golang-rest-example/internal/app/utils"
@@ -16,7 +15,6 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"github.com/gorilla/handlers"
-
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
