@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/alex-dev-master/golang-rest-example/internal/app/model"
 	"github.com/alex-dev-master/golang-rest-example/internal/app/store"
 	"github.com/alex-dev-master/golang-rest-example/internal/app/utils"
+	"io"
 	"net/http"
 	"time"
 
@@ -61,6 +63,7 @@ func (s *server) configureRouter() {
 	s.router.Use(s.setRequestID)
 	s.router.Use(s.logRequest)
 	s.router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
+	s.router.HandleFunc("/hello", s.handleHello()).Methods("GET")
 	s.router.HandleFunc("/users", s.handleUsersCreate()).Methods("POST")
 	s.router.HandleFunc("/sessions", s.handleSessionsCreate()).Methods("POST")
 
@@ -130,6 +133,12 @@ func (s *server) authenticateUser(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), ctxKeyUser, u)))
 	})
+}
+
+func (s *server) handleHello() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, "Hello")
+	}
 }
 
 func (s *server) handleUsersCreate() http.HandlerFunc {

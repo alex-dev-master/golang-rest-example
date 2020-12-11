@@ -20,7 +20,7 @@ func (r *UserRepository) Create(u *model.User) error {
 	}
 
 	return r.Store.Db.QueryRow(
-		"INSERT INTO users (email, encrypted_password) VALUES ($1, $2) RETURNING id",
+		"INSERT INTO users (email, encrypted_password) VALUES (?, ?)",
 		u.Email,
 		u.EncryptedPassword,
 	).Scan(&u.ID)
@@ -30,7 +30,7 @@ func (r *UserRepository) Create(u *model.User) error {
 func (r *UserRepository) Find(id int) (*model.User, error) {
 	u := &model.User{}
 	if err := r.Store.Db.QueryRow(
-		"SELECT id, email, encrypted_password FROM users WHERE id = $1",
+		"SELECT id, email, encrypted_password FROM users WHERE id = ?",
 		id,
 	).Scan(
 		&u.ID,
@@ -51,7 +51,7 @@ func (r *UserRepository) Find(id int) (*model.User, error) {
 func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
 	u := &model.User{}
 	if err := r.Store.Db.QueryRow(
-		"SELECT id, email, encrypted_password FROM users WHERE email = $1",
+		"SELECT id, email, encrypted_password FROM users WHERE email = ?",
 		email,
 	).Scan(
 		&u.ID,
